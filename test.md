@@ -13,9 +13,9 @@ Benefits of accurate gait analysis include helping to predict falls in older adu
 # Defining our Measurement Variable
 
 When using an IMU for gait analysis, we would like to use the IMU's measurements to calculate heel-strike, toe-off, and stride length (and perhaps we'll add toe-down and heel-off if we're feeling ambitious). At any given time $k$, the IMU will give us accelerometer data along its three local axes. We can think of this accereration data as a vector $\mathbf a^\text{local}$, where at time $k$, we have
-
-$$\mathbf a^{\text{local}}_k = \left[a^{\text{pitch}}_k, a^{\text{roll}}_k, a^{\text{yaw}}_k\right]^T.$$
-
+$$
+\mathbf a^{\text{local}}_k = \left[a^{\text{pitch}}_k, a^{\text{roll}}_k, a^{\text{yaw}}_k\right]^T,
+$$
 It will also give us rotational velocity along these local axes which we can write as
 $$
 \boldsymbol\omega^{local}_k = \left[\omega^{\text{pitch}}_k, \omega^{\text{roll}}_k, \omega^{\text{yaw}}_k\right]^T.

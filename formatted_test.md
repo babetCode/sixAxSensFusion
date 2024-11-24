@@ -112,7 +112,7 @@ After the system model has been set, there are five steps of the simple kalman f
 0. <u>Set initial values</u>
 
 $$\begin{align*}
-\mathbf x_0 &= \text{initial state} &(& \text{nx1 column vector}), \\
+\mathbf x_k &= \text{initial state} &(& \text{nx1 column vector}), \\
 \mathbf P_0 &= \text{initial error covariance} &(& \text{nxn matrix}).
 \end{align*}$$
 

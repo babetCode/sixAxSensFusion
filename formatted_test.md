@@ -1,5 +1,5 @@
 # sixAxSensFusion
-Sensor fusion algorithms for 6-axis IMU gait analysis
+My code for analyzing 6-axis IMU data.
 
 # Introduction to Sensor Fusion
 
@@ -10,6 +10,7 @@ But here's the catch: accelerometers and gyroscopes, while powerful, have their 
 This is where sensor fusion has a lot to offer. By combining data from both sensors, fusion algorithms can balance the strengths of each to help compensate for the weaknesses of the other. Gyroscope data can stabilize noisy accelerometer readings, and accelerometer data can reduce gyroscope drift. The sensor fusion algorithms discussed in this paper help this combination work smoothly, producing clean, reliable data about how someone walks.
 
 Benefits of accurate gait analysis include helping to predict falls in older adults, tracking how well a patient is recovering from surgery, or even fine-tuning athletic performance. Without sensor fusion, IMU data would be too messy or unreliable to perform these functions. With this little bit of background out of the way, let's dive deeper into how sensor fusion works in the context of the 6-axis IMU.
+
 # Defining our Measurement Variable
 
 When using an IMU for gait analysis, we would like to use the IMU's measurements to calculate heel-strike, toe-off, and stride length (and perhaps we'll add toe-down and heel-off if we're feeling ambitious). At any given time $k$, the IMU will give us accelerometer data along its three local axes. We can think of this accereration data as a vector $\mathbf a^\text{local}$, where at time $k$, we have
@@ -26,6 +27,7 @@ $$\mathbf z_k = \left[a^{\text{pitch}}_k, a^{\text{roll}}_k, a^{\text{yaw}}_k, \
 
 
 It's important to keep in mind that these measurements are with respect to the local frame of the IMU, and not the world frame.
+
 # Defining our State Variable
 
 In order to determine when and how gait events happen, we would need to know the IMU's position and orientation in world frame axes, such as north($N$)-east($E$)-down($D$) axes. Additionally, it would be nice to have the IMU's velocity and acceleration in the world frame. To visualize this, we could assign variables to position, linear velocity, linear acceleration, orientation, and angular velocity, like this:
@@ -246,6 +248,7 @@ $$\mathbf P_0 =
 \end{bmatrix},$$
 
 where $\sigma^2_{p^N_0}$ is the variance in the initial position in the north direction, and so on and so forth. As a general rule of thumb, it will be better to overestimate than underestimate - the filter will converge if $\mathbf P_0$ is too large, but might not if it's too small.
+
 # Designing the process: F, Q
 
 The process of the kalman filter is described by $\mathbf F$ (the state transition function) and $\mathbf Q$ (the process covariance).
@@ -258,58 +261,56 @@ There are a few things we want $\mathbf F$ to do.
 
 If $dt$ is the time between measurements, then we want it to update the postion $\mathbf p = \left[p^\text{N}_k, p^\text{E}_k, p^\text{D}_k\right]^T$ in a way that satisfies
 
-$$\mathbf p_{k+1} = \mathbf p_k + (\mathbf v_k)dt,
-$$ 
-where $\mathbf v = \left[v^\text{N}_k, v^\text{E}_k, v^\text{D}_k\right]^T$, and $dt$ is the time step between measurements. This expands to$$
+$$\mathbf p_{k+1} = \mathbf p_k + (\mathbf v_k)dt,$$
 
-\begin{bmatrix}p^\text N_{k+1}\\p^\text E_{k+1}\\p^\text D_{k+1}\end{bmatrix} = \begin{bmatrix}p^\text N_{k}\\p^\text E_{k}\\p^\text D_{k}\end{bmatrix} + \begin{bmatrix}v^\text N_{k}\\v^\text E_{k}\\v^\text D_{k}\end{bmatrix}dt.
+where $\mathbf v = \left[v^\text{N}_k, v^\text{E}_k, v^\text{D}_k\right]^T$, and $dt$ is the time step between measurements. This expands to
 
-$$Therefore, the top three rows of our matrix will be$$
+$$\begin{bmatrix}p^\text N_{k+1}\\p^\text E_{k+1}\\p^\text D_{k+1}\end{bmatrix} = \begin{bmatrix}p^\text N_{k}\\p^\text E_{k}\\p^\text D_{k}\end{bmatrix} + \begin{bmatrix}v^\text N_{k}\\v^\text E_{k}\\v^\text D_{k}\end{bmatrix}dt.$$
 
-\begin{bmatrix}
+Therefore, the top three rows of our matrix will be
+
+$$\begin{bmatrix}
 1&0&0&dt&0&0&0&0&0&0&0&0&0&0&0&0\\
 0&1&0&0&dt&0&0&0&0&0&0&0&0&0&0&0\\
 0&0&1&0&0&dt&0&0&0&0&0&0&0&0&0&0
-\end{bmatrix}.
+\end{bmatrix}.$$
 
-$$
 2. <b><u>Velocity Update</u></b>
 
-We  want it to update the velocity in way that satisfies$$
+We  want it to update the velocity in way that satisfies
 
-\mathbf v_{k+1} = \mathbf v_k + (\mathbf a_k - g)dt,
+$$\mathbf v_{k+1} = \mathbf v_k + (\mathbf a_k - g)dt,$$
 
-$$where the $-g$ term corrects for gravity. This expands to$$
+where the $-g$ term corrects for gravity. This expands to
 
-\begin{align*}
+$$\begin{align*}
 \begin{bmatrix}v^\text N_{k+1}\\v^\text E_{k+1}\\v^\text D_{k+1}\end{bmatrix} &= \begin{bmatrix}v^\text N_{k}\\v^\text E_{k}\\v^\text D_{k}\end{bmatrix} + \left(\begin{bmatrix}a^\text N_{k}\\a^\text E_{k}\\a^\text D_{k}\end{bmatrix} - \begin{bmatrix}0\\0\\9.8\end{bmatrix}\right)dt, \\
 &= \begin{bmatrix}v^\text N_{k}\\v^\text E_{k}\\v^\text D_{k}\end{bmatrix} + \begin{bmatrix}a^\text N_{k}\\a^\text E_{k}\\a^\text D_{k}-9.8\end{bmatrix}dt,
-\end{align*}
+\end{align*}$$
 
-$$Since the resulting $-dt$ term at the bottom of the vector is non linearly dependent on the components of $\mathbf x$, we can model gravity's input to the system by letting $\mathbf{Bu}$ subtract $9.8(dt)$ from the $v^\text D$ component of $\mathbf x$ in the state update equation , and the next three rows of our matrix will be$$
+Since the resulting $-dt$ term at the bottom of the vector is non linearly dependent on the components of $\mathbf x$, we can model gravity's input to the system by letting $\mathbf{Bu}$ subtract $9.8(dt)$ from the $v^\text D$ component of $\mathbf x$ in the state update equation , and the next three rows of our matrix will be
 
-\begin{bmatrix}
+$$\begin{bmatrix}
 0&0&0&1&0&0&dt&0&0&0&0&0&0&0&0&0\\
 0&0&0&0&1&0&0&dt&0&0&0&0&0&0&0&0\\
 0&0&0&0&0&1&0&0&dt&0&0&0&0&0&0&0
-\end{bmatrix}.
+\end{bmatrix}.$$
 
-$$
 3. <b><u>Acceleration Update</u></b>
 
-To keep things simple, we won't predict change to the acceleration or angular velocity and will use$$
+To keep things simple, we won't predict change to the acceleration or angular velocity and will use
 
-\mathbf a_{k+1} = \mathbf a_k.
+$$\mathbf a_{k+1} = \mathbf a_k.$$
 
-$$Therefore, next three rows of our matrix will be$$
+Therefore, next three rows of our matrix will be
 
-\begin{bmatrix}
+$$\begin{bmatrix}
 0&0&0&0&0&0&1&0&0&0&0&0&0&0&0&0\\
 0&0&0&0&0&0&0&1&0&0&0&0&0&0&0&0\\
 0&0&0&0&0&0&0&0&1&0&0&0&0&0&0&0
-\end{bmatrix}.
+\end{bmatrix}.$$
 
-$$
+
 4. <b><u>Orientation Update</u></b>
 
 We want it to update the orientation in a way that satisfies the quaternion update function$$

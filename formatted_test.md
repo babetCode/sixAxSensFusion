@@ -119,12 +119,10 @@ $$\begin{align*}
 
 1. <u>Predict state and error covariance:</u>
 
-$$\begin{align*}\mathbf{\bar x}_k &= \mathbf x_{k-1}, \\
-t &= t\end{align*}$$
+$$\begin{align}\mathbf{\bar x}_k &= \mathbf A , \\
+\mathbf{\bar P}_k &= \mathbf A \mathbf A^T + \mathbf Q.$$\end{align}$$
 
-$$\mathbf x_{k-1}$$
-
-$$\begin{align}\mathbf{\bar x}_k &= \mathbf A \mathbf{x}_{k-1}, \\
+$$\begin{align}\mathbf{\bar x}_k &= \mathbf A \mathbf x_{k-1}, \\
 \mathbf{\bar P}_k &= \mathbf A \mathbf P_{k-1} \mathbf A^T + \mathbf Q.$$\end{align}$$
 
 

@@ -117,10 +117,10 @@ $$\begin{align*}
 
 1. <u>Predict state and error covariance:</u>
 
-\begin{align*}
-\mathbf{\bar x}_k &= \mathbf A \mathbf x_{k-1}, \\
-\mathbf{\bar P}_k &= \mathbf A \mathbf P_{k-1} \mathbf A^T + \mathbf Q.
-\end{align*}
+$$\begin{align*}
+\mathbf{\bar{x}}_k &= \mathbf A \mathbf x_{k-1}, \\
+\mathbf{\bar{P}}_k &= \mathbf A \mathbf P_{k-1} \mathbf A^T + \mathbf Q.
+\end{align*}$$
 
 
 2. <u>Compute kalman gain:</u>

@@ -112,17 +112,17 @@ After the system model has been set, there are five steps of the simple kalman f
 0. <u>Set initial values</u>
 
 $$\begin{align*}
-\mathbf x_k &= \text{initial state} &(& \text{nx1 column vector}), \\
+\mathbf x_0 &= \text{initial state} &(& \text{nx1 column vector}), \\
 \mathbf P_0 &= \text{initial error covariance} &(& \text{nxn matrix}).
 \end{align*}$$
 
 
 1. <u>Predict state and error covariance:</u>
 
-$$\begin{align*}
+$$\begin{align}
 \mathbf{\bar x}_k &= \mathbf A \mathbf x_{k-1}, \\
 \mathbf{\bar P}_k &= \mathbf A \mathbf P_{k-1} \mathbf A^T + \mathbf Q.
-\end{align*}$$
+\end{align}$$
 
 
 2. <u>Compute kalman gain:</u>

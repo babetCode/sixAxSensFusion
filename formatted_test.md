@@ -119,7 +119,7 @@ $$\begin{align*}
 
 1. <u>Predict state and error covariance:</u>
 
-$$test$$
+$$\begin{align*}\mathbf{\bar x}_k &= \mathbf A \mathbf x_{k-1}, \\ \end{align*}$$
 
 \begin{align}
 \mathbf{\bar x}_k &= \mathbf A \mathbf x_{k-1}, \\

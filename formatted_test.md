@@ -122,7 +122,7 @@ $$\begin{align*}
 $$\begin{align*}\mathbf{\bar x}_k &= \mathbf A, \\
 t &= t\end{align*}$$
 
-$$\mathbf{x}_{k-1}$$
+$$\mathbf x_{k-1}$$
 
 $$\begin{align}\mathbf{\bar x}_k &= \mathbf A \mathbf{x}_{k-1}, \\
 \mathbf{\bar P}_k &= \mathbf A \mathbf P_{k-1} \mathbf A^T + \mathbf Q.$$\end{align}$$

@@ -100,10 +100,10 @@ Now that we've defined our problem and seen a bit of how our measurment and stat
 The kalman filter estimates an nx1 column vector state variable ($\mathbf x$), based on some mx1 column vector measurement ($\mathbf z$), using a system model:
 
 $$\begin{align*}
-\text{state transition matrix} &: \mathbf A  &(& \text{nxn matrix}), \\
-\text{process noise covariance} &: \mathbf Q  &(& \text{nxn diagonal matrix}), \\
-\text{measurement covariance} &: \mathbf C  &(& \text{mxm matrix}), \\
-\text{measurement model matrix} &: \mathbf H  &(& \text{mxn matrix}).
+\text{state transition matrix} &: \mathbf A  &( \text{nxn matrix}), \\
+\text{process noise covariance} &: \mathbf Q  &( \text{nxn diagonal matrix}), \\
+\text{measurement covariance} &: \mathbf C  &( \text{mxm matrix}), \\
+\text{measurement model matrix} &: \mathbf H  &( \text{mxn matrix}).
 \end{align*}$$
 
 

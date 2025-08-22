@@ -1,1 +1,1 @@
-Sensor fusion algorithms for 6-axis IMU gait analysis
+Sensor fusion algorithms for 6-axis IMUs
